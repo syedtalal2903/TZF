@@ -1,0 +1,108 @@
+import numpy as np
+import sympy as sy
+import streamlit as st
+import matplotlib.pyplot as plt
+from sympy.parsing.sympy_parser import parse_expr
+
+#defining a function
+def f(x):
+    # return 5*x**2-3*2
+    # take input function as a string
+    f_str = st.text_input("Enter a function in terms of x:","sin(x)")
+    # convert input string to SymPy expression
+    exp = sy.sympify(f_str)
+    st.write(exp)
+    st.markdown("---")
+    return exp
+
+def graph(result):
+    try:
+        # create input widget for the function
+        function_str = str(result)
+        # function_str = st.text_input("", result)
+        col1, col2 = st.columns(2)
+
+        # parse the function string into a SymPy expression
+        try:
+            function_expr = parse_expr(function_str)
+        except:
+            st.error("Invalid function expression. Please enter a valid mathematical function in x.")
+            st.stop()
+
+        with col1:
+            # create input widgets for the range of x values to plot
+            xmin, xmax = st.slider("Select a range for x", -10.0, 10.0, (-5.0, 5.0))
+        # evaluate the function for a range of x values
+        x = np.linspace(xmin, xmax, 1000)
+        y = np.array([function_expr.subs({"x": xi}) for xi in x])
+        # create a Matplotlib figure and plot the function
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(x, y)
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_title(f"Plot of {function_str}")
+
+        # create a list to store x and y values for the interactive line chart
+        data = []
+        for xi, yi in zip(x, y):
+            data.append((xi, yi))
+
+        # create an empty plot with a single point
+        line, = ax.plot([], [], 'r.-', markersize=10)
+
+        # function to update the plot with new x and y values
+        def update_line_chart(x_index):
+            line.set_data(x[:x_index], y[:x_index])
+            fig.canvas.draw_idle()
+            # Create two columns
+        with col2:
+            # add slider to update the line chart
+            slider = st.slider(
+                "Drag the slider to update the line chart",
+                min_value=0,
+                max_value=len(data),
+                step=1,
+            )
+            update_line_chart(slider)
+
+        # display the plot in Streamlit using st.pyplot
+        st.pyplot(fig)
+    except:
+         st.warning("Can't Print the Graph 🥹")
+
+
+if __name__ == "__main__":
+    st.set_page_config(page_title="Calculus", page_icon='😃', layout="centered",initial_sidebar_state='auto')
+    # Hide the "Made with Streamlit" footer
+    hide_streamlit_style="""
+    <style>
+    #MainMenu{visibility:hidden;}
+    footer{visibility:hidden;}
+    </style>
+
+    """
+    st.markdown(hide_streamlit_style,unsafe_allow_html=True)
+    # Define a CSS style for the text
+    text_style = """
+        <style>
+            h1 {
+                color: #FFA500 ;
+            }
+            h2 {
+                color: red;
+            }
+        </style>
+        """
+
+    # Use the CSS style to display some text with red color
+    st.markdown(text_style, unsafe_allow_html=True)
+    st.write("""
+    # Differential calculator
+    """)
+    x = sy.symbols('x')
+    result = sy.diff(f(x),x)
+    st.write("Result")
+    st.write(result)
+    st.markdown("---")
+    st.markdown("""## Graph """)
+    graph(result)

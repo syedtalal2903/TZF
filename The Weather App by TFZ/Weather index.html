@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>The Weather App</title>
+		<script defer type="text/javascript" src="script.js"></script>
+		<link rel="stylesheet" type="text/css" href="input.css" />
+		<link href="./fonts/css/uicons-bold-straight.css" rel="stylesheet" />
+	</head>
+	<body>
+		<main class="main-box">
+			<div class="left-pane">
+				<div class="info-card clouds">
+					<h3><i class="fi-bs-clouds"></i> Clouds</h3>
+					<h2 class="clouds-data">- - -</h2>
+				</div>
+				<div class="info-card sunrise">
+					<h3><i class="fi-bs-sunrise"></i> Sunrise</h3>
+					<h2 class="sunrise-data">- - -</h2>
+				</div>
+				<div class="info-card sunset">
+					<h3><i class="fi-bs-sunset"></i> Sunset</h3>
+					<h2 class="sunset-data">- - -</h2>
+				</div>
+				<div class="info-card wind-deg">
+					<h3><i class="fi-bs-windsock"></i> Wind Direction</h3>
+					<h2 class="wind-deg-data">- - -</h2>
+				</div>
+				<div class="info-card gust">
+					<h3><i class="fi-bs-wind-warning"></i> Gust</h3>
+					<h2 class="gust-data">- - -</h2>
+				</div>
+				<div class="info-card wind-speed">
+					<h3><i class="fi-bs-wind"></i> Wind Speed</h3>
+					<h2 class="wind-speed-data">- - -</h2>
+				</div>
+			</div>
+
+			<div class="middle-pane">
+				<div class="city-container">
+					<!-- <img class="image" src='./fonts/svg/fi-bs-cloud.svg'></img> -->
+					<h1 class="city">● ● ● ●</h1>
+					<p>● ● WEATHER ● ●</p>
+					<div class="weather">● ● ● ●</div>
+					<div class="temp"><i class="main-temp"> Temperature : </i></div>
+					<div class="feels-like"><i class="main-temp"> Feels Like : </i></div>
+				</div>
+				<div class="input-box">
+					<input
+						class="search-input"
+						type="text"
+						placeholder="Enter City Name"
+					/>
+					<button class="search-button">
+						<img
+							class="throbber search-throbber"
+							src="active.svg"
+							alt="throbber"
+						/>
+						Check Weather
+					</button>
+					<button class="current-location">
+						<img
+							class="throbber location-throbber"
+							src="active.svg"
+							alt="throbber"
+						/>Use Current Location
+					</button>
+				</div>
+			</div>
+
+			<div class="right-pane">
+				<div class="info-card ground-level">
+					<h3><i class="fi-bs-water-lower"></i> Ground Level</h3>
+					<h2 class="ground-level-data">- - -</h2>
+				</div>
+				<div class="info-card humidity">
+					<h3><i class="fi-bs-humidity"></i> Humidity</h3>
+					<h2 class="humidity-data">- - -</h2>
+				</div>
+				<div class="info-card pressure">
+					<h3><i class="fi-bs-arrow-alt-to-bottom"></i> Pressure</h3>
+					<h2 class="pressure-data">- - -</h2>
+				</div>
+				<div class="info-card sea-level">
+					<h3><i class="fi-bs-water-rise"></i> Sea Level</h3>
+					<h2 class="sea-level-data">- - -</h2>
+				</div>
+				<div class="info-card temp-min">
+					<h3><i class="fi-bs-temperature-down"></i> Min. Temperature</h3>
+					<h2 class="temp-min-data">- - -</h2>
+				</div>
+				<div class="info-card temp-max">
+					<h3><i class="fi-bs-temperature-up"></i> Max. Temperature</h3>
+					<h2 class="temp-max-data">- - -</h2>
+				</div>
+			</div>
+		</main>
+
+		<dialog class="modal">
+			<div class="modal-content">
+				<div class="modal-top">
+					<h3 class="modal-title">Choose City</h3>
+					<button class="close-modal"><i class="fi-bs-cross"></i></button>
+				</div>
+				<form class="form" id="city" method="dialog"></form>
+				<div class="button-box">
+					<button class="submit-button" type="submit" form="city">
+						Select
+					</button>
+					<button class="cancel-button" type="reset" form="city">Cancel</button>
+				</div>
+			</div>
+		</dialog>
+	</body>
+</html>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*,
+*::after,
+*::before {
+	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Roboto', sans-serif;
+}
+
+html {
+	height: 100%;
+}
+
+:focus {
+	outline-color: transparent;
+}
+
+html,
+body,
+div,
+h1,
+h2,
+h3,
+p,
+form,
+label {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+body {
+	line-height: 1;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+body {
+	display: grid;
+	place-items: center;
+	height: 100%;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-image: linear-gradient(to bottom, #84ceff, #c6f5ff);
+}
+
+.main-box {
+	display: flex;
+	gap: 1em;
+}
+
+.left-pane,
+.right-pane,
+.middle-pane {
+	display: grid;
+	gap: 1em;
+	justify-content: stretch;
+	background-color: #fff8;
+	border-radius: 10px;
+	border: 1px solid #0684;
+	padding: 1em;
+	box-shadow: 0 10px 30px -10px #0062;
+}
+
+.left-pane,
+.right-pane {
+	width: min(260px, 28vw);
+}
+
+.info-card {
+	display: grid;
+	justify-items: center;
+	gap: 0.8em;
+	background-color: #fff8;
+	padding: 0.8em;
+	border-radius: 5px;
+}
+
+.throbber {
+	height: 16px;
+	display: none;
+}
+
+h3,
+i {
+	opacity: 0.6;
+	padding-inline: 4px;
+}
+
+.middle-pane {
+	grid-template-rows: 3fr 2fr;
+}
+
+.city-container {
+	display: grid;
+	grid-template-rows: 2fr repeat(4, 1fr);
+	width: min(400px, 30vw);
+	justify-items: center;
+	overflow: hidden;
+	border-radius: 5px;
+	background-color: #fff8;
+	padding-bottom: 1em;
+}
+
+.city-container > * {
+	font-size: 1.2rem;
+	display: grid;
+	place-items: center;
+}
+
+.city-container > h1.city {
+	font-size: 2em;
+	text-shadow: 1px 3px 8px #0004;
+	background-color: #fff8;
+	width: 100%;
+	text-transform: uppercase;
+}
+
+.city-container > p {
+	font-size: 0.8em;
+	padding-top: 1em;
+	border-top: 1px solid #0001;
+	width: 100%;
+	opacity: 0.6;
+}
+
+.weather {
+	text-transform: uppercase;
+}
+
+.input-box {
+	display: grid;
+	gap: 1em;
+}
+
+.search-input {
+	font-size: 1rem;
+	text-align: center;
+	border: 1px solid #8cf;
+	background-color: #fffa;
+	border-radius: 5px;
+	padding-inline: 1em;
+	box-shadow: 0 3px 10px -3px #0042;
+}
+
+.search-input:focus-visible {
+	outline: 3px solid #0088ff;
+	outline-offset: -2px;
+}
+
+button {
+	border: none;
+	border-radius: 5px;
+	background-color: #fff;
+	cursor: pointer;
+	transition: 140ms;
+	background-color: #0088ff;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+button:hover {
+	box-shadow: 0 3px 10px #0468, 0 4px 0 #0088ff;
+	transform: translateY(-4px);
+}
+
+button:active {
+	box-shadow: 0 3px 10px #0468, 0 1px 0 #0088ff;
+	transform: translateY(-1px);
+}
+
+dialog::backdrop {
+	background-color: #fffa;
+	backdrop-filter: blur(5px);
+}
+
+dialog {
+	border: 1px solid #0452;
+	border-radius: 10px;
+	box-shadow: 0 5px 20px -5px #0004;
+	background-color: rgba(229, 244, 255);
+	margin: auto;
+	padding: 0;
+	animation: modal 400ms ease;
+}
+
+@keyframes modal {
+	0% {
+		transform: translateY(-20vh);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
+}
+
+.modal-content {
+	display: grid;
+	gap: 1em;
+	padding: 1em;
+	min-width: 340px;
+}
+
+.modal-top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.form {
+	display: grid;
+	grid-template-columns: 30px 1fr;
+	row-gap: 0.3em;
+	padding-inline-start: 1em;
+	align-items: center;
+}
+
+.form > label {
+	background-color: #fff8;
+	padding: 1em;
+	padding-inline-start: 0.6em;
+	margin-inline-start: 0.3em;
+	border-radius: 5px;
+	box-shadow: -50px 0 0 #fffc;
+}
+
+input[type='radio'] {
+	accent-color: #0088ff;
+	height: 20px;
+	z-index: 10;
+	width: 20px;
+}
+
+.button-box {
+	display: flex;
+	justify-content: space-between;
+	gap: 1em;
+	height: 40px;
+}
+
+.button-box > * {
+	flex: 1;
+	cursor: pointer;
+}
+
+.submit-button {
+	background-color: #0088ff;
+	color: white;
+}
+
+.cancel-button {
+	background-color: #ff4466;
+	color: white;
+}
+
+.cancel-button:hover {
+	box-shadow: 0 3px 10px rgba(102, 0, 0, 0.533), 0 4px 0 #ff0000;
+}
+
+.cancel-button:active {
+	box-shadow: 0 3px 10px rgba(102, 0, 0, 0.533), 0 1px 0 #ff0000;
+	transform: translateY(-1px);
+}
+
+.close-modal {
+	background-color: transparent;
+	color: black;
+	border: 2px solid #0002;
+	aspect-ratio: 1;
+	padding: 0.4rem;
+}
+
+.close-modal:hover {
+	box-shadow: none;
+	transform: none;
+}
+
+@media screen and (max-width: 800px) {
+	body {
+		margin-block: 1em;
+	}
+
+	h1 {
+		color: rgb(0, 19, 68);
+	}
+
+	.main-box {
+		display: grid;
+		grid-template-areas: 'middle-pane middle-pane' 'left-pane right-pane';
+	}
+
+	.middle-pane {
+		grid-area: middle-pane;
+		justify-items: stretch;
+		grid-template-rows: 3fr 1fr;
+	}
+
+	.left-pane {
+		grid-area: left-pane;
+		width: 44vw;
+	}
+
+	.right-pane {
+		grid-area: right-pane;
+		width: 44vw;
+	}
+
+	.city-container {
+		width: 100%;
+	}
+
+	.input-box {
+		grid-template-areas: 'input input' 'left-button right-button';
+		grid-template-columns: 1fr 1fr;
+		height: 100px;
+	}
+
+	.search-input {
+		grid-area: input;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	body {
+		font-size: 14px;
+	}
+
+	.main-box {
+		width: calc(100vw - 2rem);
+		display: grid;
+		grid-template-areas: 'middle-pane' 'left-pane' 'right-pane';
+	}
+
+	.left-pane,
+	.right-pane {
+		width: 100%;
+	}
+
+	.info-card {
+		display: flex;
+		align-items: center;
+		height: 50px;
+	}
+
+	.info-card > * {
+		flex: 1;
+	}
+
+	.info-card > h3 {
+		border-right: 2px solid #0004;
+	}
+} 
+</style>
+<script>
+const modal = document.querySelector('.modal');
+const cityList = document.querySelector('.form');
+const cityTitle = document.querySelector('.city');
+const searchInput = document.querySelector('.search-input');
+const searchButton = document.querySelector('.search-button');
+const closeButton = document.querySelector('.close-modal');
+const cancelButton = document.querySelector('.cancel-button');
+const useCurrentLocation = document.querySelector('.current-location');
+const searchThrobber = document.querySelector('.search-throbber');
+const locationThrobber = document.querySelector('.location-throbber');
+
+const API_KEY = '81987dd79e0d74f1918035c9e09b452e';
+
+async function getLocation(city) {
+	try {
+		const location = await fetch(
+			`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${API_KEY}`
+		);
+		const locationData = await location.json();
+		parseResponseJson(locationData);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+function getCurrentLocation() {
+	navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+		maximumAge: 60000,
+		timeout: 10000,
+		enableHighAccuracy: true,
+	});
+	function onSuccess(position) {
+		getWeather(position.coords);
+	}
+	function onError(error) {
+		console.error(error);
+	}
+}
+
+async function getWeather(coordinates) {
+	try {
+		let latitude = coordinates.latitude;
+		let longitude = coordinates.longitude;
+		const weatherResponse = await fetch(
+			`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
+		);
+		const weatherData = await weatherResponse.json();
+		handleWeatherData(weatherData);
+	} catch (error) {
+		alert('we are having trouble getting weather info :(');
+		console.error(error);
+	}
+}
+
+function parseResponseJson(data) {
+	if (data.length === 1) {
+		let latitude = data[0].lat;
+		let longitude = data[0].lon;
+		getWeather({ latitude, longitude });
+	} else {
+		cityList.innerHTML = '';
+		for (let i = 0; i < data.length; i++) {
+			const cityListItem = document.createElement('input');
+			const cityListItemLabel = document.createElement('label');
+			cityListItem.classList.add('city-list-item');
+			cityListItem.setAttribute('name', 'city-choice');
+			cityListItem.setAttribute('id', data[i].name + ', ' + data[i].state);
+			cityListItem.setAttribute('type', 'radio');
+			cityListItem.setAttribute('value', i);
+			cityListItemLabel.innerText = data[i].name + ', ' + data[i].state;
+			if (i === 0) {
+				cityListItem.setAttribute('checked', '');
+			}
+			cityList.append(cityListItem, cityListItemLabel);
+		}
+		modal.showModal();
+		searchThrobber.style.display = 'none';
+		handleFormData(data);
+	}
+}
+
+function handleFormData(locData) {
+	cityList.addEventListener(
+		'submit',
+		function (event) {
+			var data = new FormData(cityList);
+			for (const entry of data) {
+				var output = {
+					latitude: locData[entry[1]].lat,
+					longitude: locData[entry[1]].lon,
+				};
+			}
+			getWeather(output);
+		},
+		false
+	);
+}
+
+function handleWeatherData(data) {
+	try {
+		document.querySelector('.clouds-data').innerHTML = `${data.clouds?.all}%`;
+		document.querySelector(
+			'.wind-deg-data'
+		).innerHTML = `${data.wind.deg} from N`;
+		document.querySelector('.sunset-data').innerHTML = `${convertMsToTime(
+			data.sys.sunset + data.timezone
+		)} PM`;
+		document.querySelector('.sunrise-data').innerHTML = `${convertMsToTime(
+			data.sys.sunrise + data.timezone
+		)} AM`;
+		document.querySelector('.gust-data').innerHTML = `${data.wind.gust} m/s`;
+		document.querySelector(
+			'.wind-speed-data'
+		).innerHTML = `${data.wind.speed} m/s`;
+		document.querySelector(
+			'.weather'
+		).innerHTML = `${data.weather[0].description}`;
+		document.querySelector('.temp').innerHTML = `Temperature : ${Math.floor(
+			data.main.temp - 273
+		)} °C`;
+		document.querySelector(
+			'.feels-like'
+		).innerHTML = `Feels like : ${Math.floor(data.main.feels_like - 273)} °C`;
+		document.querySelector(
+			'.ground-level-data'
+		).innerHTML = `${data.main.grnd_level} hPa`;
+		document.querySelector(
+			'.humidity-data'
+		).innerHTML = `${data.main.humidity} g.m-3`;
+		document.querySelector(
+			'.pressure-data'
+		).innerHTML = `${data.main.pressure} hPa`;
+		document.querySelector(
+			'.sea-level-data'
+		).innerHTML = `${data.main.sea_level} hPa`;
+		document.querySelector('.temp-min-data').innerHTML = `${Math.floor(
+			data.main.temp_min - 273
+		)} °C`;
+		document.querySelector('.temp-max-data').innerHTML = `${Math.floor(
+			data.main.temp_max - 273
+		)} °C`;
+		document.querySelector('.city').innerText = data.name;
+
+		locationThrobber.style.display = 'none';
+		searchThrobber.style.display = 'none';
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+function convertUTCDateToLocalDate(time) {
+	var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+	var offset = date.getTimezoneOffset() / 60;
+	var hours = date.getHours();
+	newDate.setHours(hours - offset);
+	return newDate;
+}
+
+function padTo2Digits(num) {
+	return num.toString().padStart(2, '0');
+}
+
+function convertMsToTime(milliseconds) {
+	let seconds = Math.floor(milliseconds / 1000);
+	let minutes = Math.floor(seconds / 60);
+	let hours = Math.floor(minutes / 60);
+	seconds = seconds % 60;
+	minutes = minutes % 60;
+	hours = hours % 24;
+	return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}:${padTo2Digits(
+		seconds
+	)}`;
+}
+
+searchButton.addEventListener('click', () => {
+	searchThrobber.style.display = 'unset';
+	var cityName = searchInput.value;
+	getLocation(cityName);
+});
+
+closeButton.onclick = () => {
+	modal.close();
+};
+
+cancelButton.onclick = () => {
+	modal.close();
+};
+
+useCurrentLocation.onclick = () => {
+	getCurrentLocation();
+	locationThrobber.style.display = 'unset';
+};
+window.onload = getCurrentLocation;
+/** @type {import('tailwindcss').Config} */ 
+module.exports = {
+    content: ["./src/**/*.{html,js}"],
+    theme: {
+      extend: {},
+    },
+    plugins: [],
+  }
+</script>
